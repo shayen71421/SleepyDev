@@ -1,6 +1,7 @@
 import './style.css';
 import { FaceTracker } from './face-tracking.js';
 import { GravityGame } from './game.js';
+import { getTopScores, saveScore } from './firebase.js';
 
 const webcam = document.getElementById('webcam');
 const landmarks = document.getElementById('landmark-overlay');
@@ -17,6 +18,16 @@ const calibCount = document.getElementById('calib-count');
 const statusText = document.getElementById('calibration-status');
 const sensitivityValue = document.getElementById('sensitivity-value');
 const gestureFeedback = document.getElementById('gesture-feedback');
+const saveScoreChoice = document.getElementById('save-score-choice');
+const skipScore = document.getElementById('skip-score');
+const scoreForm = document.getElementById('score-form');
+const playerName = document.getElementById('player-name');
+const scoreSaveStatus = document.getElementById('score-save-status');
+const leaderboardList = document.getElementById('leaderboard-list');
+const leaderboardMenu = document.getElementById('leaderboard-menu');
+const homeLeaderboardList = document.getElementById('home-leaderboard-list');
+const openLeaderboard = document.getElementById('open-leaderboard');
+const closeLeaderboard = document.getElementById('close-leaderboard');
 
 let faceTracker;
 let game;
@@ -41,6 +52,8 @@ async function init() {
     game = new GravityGame('game-container', (finalScore) => {
         document.getElementById('final-score').innerText = finalScore;
         gameOverMenu.classList.remove('hidden');
+        resetScoreSaveState();
+        renderLeaderboard(leaderboardList);
     });
 
     setupListeners();
@@ -101,6 +114,49 @@ function setupListeners() {
         game.restart();
     };
 
+    saveScoreChoice.onclick = () => {
+        saveScoreChoice.classList.add('hidden');
+        skipScore.classList.add('hidden');
+        scoreForm.classList.remove('hidden');
+        playerName.focus();
+    };
+
+    skipScore.onclick = () => {
+        scoreSaveStatus.innerText = 'Run not saved.';
+        scoreSaveStatus.dataset.state = 'muted';
+        saveScoreChoice.disabled = true;
+        skipScore.disabled = true;
+    };
+
+    scoreForm.onsubmit = async (event) => {
+        event.preventDefault();
+        const score = Number(document.getElementById('final-score').innerText);
+        saveScoreChoice.disabled = true;
+        scoreSaveStatus.innerText = 'Saving your run…';
+        scoreSaveStatus.dataset.state = 'active';
+        try {
+            await saveScore(playerName.value, score);
+            scoreForm.classList.add('hidden');
+            scoreSaveStatus.innerText = 'Saved to the leaderboard.';
+            scoreSaveStatus.dataset.state = 'success';
+            await renderLeaderboard(leaderboardList, true);
+        } catch (error) {
+            saveScoreChoice.disabled = false;
+            scoreSaveStatus.innerText = 'Could not save right now. Check your connection and try again.';
+            scoreSaveStatus.dataset.state = 'error';
+            console.error(error);
+        }
+    };
+
+    openLeaderboard.onclick = () => {
+        leaderboardMenu.classList.remove('hidden');
+        renderLeaderboard(homeLeaderboardList);
+    };
+
+    closeLeaderboard.onclick = () => {
+        leaderboardMenu.classList.add('hidden');
+    };
+
     sensitivitySlider.oninput = (e) => {
         const value = parseFloat(e.target.value);
         faceTracker.setThreshold(value);
@@ -138,6 +194,40 @@ function finishCalibration(minEAR) {
 }
 
 init();
+
+function resetScoreSaveState() {
+    saveScoreChoice.classList.remove('hidden');
+    saveScoreChoice.disabled = false;
+    skipScore.classList.remove('hidden');
+    skipScore.disabled = false;
+    scoreForm.classList.add('hidden');
+    scoreForm.reset();
+    scoreSaveStatus.innerText = '';
+    scoreSaveStatus.removeAttribute('data-state');
+}
+
+async function renderLeaderboard(listElement, forceRefresh = false) {
+    listElement.innerHTML = '<li class="leaderboard-empty">Loading leaderboard…</li>';
+    try {
+        const scores = await getTopScores(forceRefresh);
+        if (!scores.length) {
+            listElement.innerHTML = '<li class="leaderboard-empty">Be the first run on the board.</li>';
+            return;
+        }
+        listElement.innerHTML = scores.map((entry, index) => `
+            <li><span class="leaderboard-rank">${String(index + 1).padStart(2, '0')}</span><strong>${escapeHtml(entry.name)}</strong><span>${entry.score}</span></li>
+        `).join('');
+    } catch (error) {
+        listElement.innerHTML = '<li class="leaderboard-empty">Leaderboard unavailable right now.</li>';
+        console.error(error);
+    }
+}
+
+function escapeHtml(value) {
+    return value.replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[character]));
+}
 
 function showGestureFeedback(message, gesture) {
     if (!gestureFeedback) return;

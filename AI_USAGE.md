@@ -4,6 +4,22 @@ If maintaining this record, briefly document the actual contributions of whichev
 
 ## Event build log
 
+## 2026-10-25T04:45:00+05:30 — Add public leaderboard home view
+
+- Tool: Codex.
+- Task: add a public top-10 leaderboard entry point to the home/setup screen.
+- Affected files: `index.html`, `main.js`, `style.css`, `README.md`, and `CHANGELOG.md`.
+- Human review: pending.
+- Validation: production build and whitespace checks passed.
+
+## 2026-10-25T04:39:07+05:30 — Add Firebase score saving and leaderboard
+
+- Tool: Codex.
+- Task: add opt-in score saving with player names and a top-10 Firestore leaderboard, using bounded reads and create-only rules.
+- Affected files: `firebase.js`, `firestore.rules`, `index.html`, `main.js`, `style.css`, `README.md`, and package manifests.
+- Human review: pending.
+- Validation: production build and whitespace checks passed; Firebase rules deployment and live browser save are still pending.
+
 ## 2026-10-25T04:40:00+05:30 — Shift palette to blue and yellow
 
 - Tool: Codex.

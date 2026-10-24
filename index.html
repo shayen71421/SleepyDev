@@ -94,6 +94,7 @@
                     <p id="calibration-status" class="status-text">Initializing camera…</p>
                     <button id="start-calibration" disabled>Wait for camera</button>
                     <p class="privacy-note">◎ Your camera stays on this device</p>
+                    <button id="open-leaderboard" class="text-button" type="button">View public leaderboard ↗</button>
                 </div>
             </div>
 
@@ -113,6 +114,20 @@
                 </div>
             </div>
 
+            <!-- ===== PUBLIC LEADERBOARD MODAL ===== -->
+            <div id="leaderboard-menu" class="modal hidden">
+                <div class="modal-content glass">
+                    <div class="modal-badge">PUBLIC BOARD</div>
+                    <h1>Who stayed awake?</h1>
+                    <p class="modal-sub">Top runs from the Sleepy Dev community.</p>
+                    <div class="leaderboard leaderboard-page">
+                        <div class="leaderboard-heading"><span>RANK / PLAYER</span><span>SCORE</span></div>
+                        <ol id="home-leaderboard-list"><li class="leaderboard-empty">Loading leaderboard…</li></ol>
+                    </div>
+                    <button id="close-leaderboard" class="button-secondary" type="button">Back to setup</button>
+                </div>
+            </div>
+
             <!-- ===== GAME OVER MODAL ===== -->
             <div id="game-over-menu" class="modal hidden">
                 <div class="modal-content glass">
@@ -122,6 +137,25 @@
                     <div class="score-big">
                         <span class="score-label">Final Score</span>
                         <span id="final-score" class="score-number">0</span>
+                    </div>
+                    <div id="score-save-panel">
+                        <p class="score-question">Save this run to the leaderboard?</p>
+                        <div class="score-actions">
+                            <button id="save-score-choice" type="button">Save score</button>
+                            <button id="skip-score" class="button-secondary" type="button">No thanks</button>
+                        </div>
+                        <form id="score-form" class="hidden">
+                            <label for="player-name">Your name</label>
+                            <div class="name-row">
+                                <input id="player-name" name="player-name" type="text" maxlength="18" autocomplete="nickname" placeholder="Enter a name" required>
+                                <button type="submit">Save</button>
+                            </div>
+                        </form>
+                        <p id="score-save-status" class="score-save-status" aria-live="polite"></p>
+                    </div>
+                    <div class="leaderboard">
+                        <div class="leaderboard-heading"><span>TOP 10</span><span>ALL-TIME RUNS</span></div>
+                        <ol id="leaderboard-list"><li class="leaderboard-empty">Loading leaderboard…</li></ol>
                     </div>
                     <button id="restart-game">Run it back <span>↗</span></button>
                 </div>

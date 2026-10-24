@@ -1,5 +1,19 @@
 # Change log
 
+## 2026-10-25T04:45:00+05:30 — Add public leaderboard home view
+
+- Changed: added a public leaderboard modal linked from the setup screen, reusing the cached top-10 Firestore query in `index.html`, `main.js`, and `style.css`.
+- Why: let visitors browse community scores before starting a game.
+- Validation: `npm run build` and `git diff --check` passed.
+- Limitations: the live board requires the Firebase Firestore rules to be published.
+
+## 2026-10-25T04:39:07+05:30 — Add Firebase score saving and leaderboard
+
+- Changed: added a post-run save prompt, player name form, bounded top-10 leaderboard, Firebase Firestore integration, and restrictive create-only rules in `index.html`, `main.js`, `firebase.js`, and `firestore.rules`.
+- Why: let players opt in to saving their score while keeping reads capped at ten documents and preventing score edits/deletes through the client rules.
+- Validation: `npm run build` and `git diff --check` passed.
+- Limitations: Firestore rules must be published in the Firebase console before remote saving works.
+
 ## 2026-10-25T04:40:00+05:30 — Shift palette to blue and yellow
 
 - Changed: replaced red obstacle visuals and orange enemies with an electric-blue and warm-yellow palette, while increasing the opening pace and left-wink boost in `style.css` and `game.js`.

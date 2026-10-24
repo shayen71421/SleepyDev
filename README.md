@@ -28,6 +28,10 @@ The organizer shared an older event template. Follow the current organizer annou
 
 - Working features: webcam calibration, blink gravity control, wink shooting, speed boost, obstacles, enemies, scoring, restart flow, and a responsive onboarding/game HUD with persistent gesture guidance.
 - Known limitations: camera permission and a well-lit face are required; audio files in `public/assets` are placeholders and are not currently wired into gameplay.
-- Libraries and APIs used: Phaser, MediaPipe Face Mesh, and `navigator.mediaDevices.getUserMedia`.
+- Libraries and APIs used: Phaser, MediaPipe Face Mesh, Firebase Firestore, and `navigator.mediaDevices.getUserMedia`.
+
+### Leaderboard setup
+
+The game uses the public Firebase Web configuration in `firebase.js` and reads at most ten leaderboard documents only when the public leaderboard or game-over screen opens. Saving a score performs one Firestore write, then one bounded refresh. Create the `sleepy-dev-scores` collection in the Firebase project and publish [firestore.rules](firestore.rules) before demoing the leaderboard. The rules allow public reads and validated score creation, but no updates or deletes.
 
 See [AI_USAGE.md](AI_USAGE.md) for AI assistance and [CHANGELOG.md](CHANGELOG.md) for the development record.
