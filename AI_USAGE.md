@@ -4,6 +4,14 @@ If maintaining this record, briefly document the actual contributions of whichev
 
 ## Event build log
 
+## 2026-10-25T04:14:03+05:30 — Improve game UI and UX
+
+- Tool: Codex.
+- Task: redesign the game onboarding and in-game interface for clearer hierarchy, feedback, and responsive behavior.
+- Affected files: `index.html`, `style.css`, `main.js`, `game.js`, and `CHANGELOG.md`.
+- Human review: pending.
+- Validation: production build and whitespace checks passed; manual camera/device review remains pending.
+
 ## 2026-10-24T22:40:00+05:30 — Transfer and rebrand application
 
 - Tool: Codex.

@@ -15,6 +15,7 @@ const landmarkToggle = document.getElementById('toggle-landmarks');
 const progressLine = document.getElementById('calibration-progress');
 const calibCount = document.getElementById('calib-count');
 const statusText = document.getElementById('calibration-status');
+const sensitivityValue = document.getElementById('sensitivity-value');
 
 let faceTracker;
 let game;
@@ -26,11 +27,13 @@ async function init() {
 
     try {
         await faceTracker.init();
-        statusText.innerText = "Camera ready. Click start and blink 5 times.";
-        startCalibrationBtn.innerText = "Start Calibration";
+        statusText.innerText = "Camera ready. You’re in the frame.";
+        statusText.dataset.state = 'ready';
+        startCalibrationBtn.innerText = "Start calibration";
         startCalibrationBtn.disabled = false;
     } catch (err) {
-        statusText.innerText = "Error: Camera access denied.";
+        statusText.innerText = "Camera access is needed to play. Check browser permissions and try again.";
+        statusText.dataset.state = 'error';
         console.error(err);
     }
 
@@ -45,7 +48,8 @@ async function init() {
 function setupListeners() {
     startCalibrationBtn.onclick = () => {
         startCalibrationBtn.disabled = true;
-        statusText.innerText = "Blink now!";
+        statusText.innerText = "Blink naturally · 0 of 5 captured";
+        statusText.dataset.state = 'active';
         let minEARDuringBlink = 1.0;
 
         // Sample EAR during calibration to find the best threshold
@@ -60,6 +64,9 @@ function setupListeners() {
             const progress = (calibrationSteps / MAX_CALIBRATION_STEPS) * 100;
             progressLine.style.width = `${progress}%`;
             if (calibCount) calibCount.innerText = `${calibrationSteps} / ${MAX_CALIBRATION_STEPS}`;
+            statusText.innerText = calibrationSteps >= MAX_CALIBRATION_STEPS
+                ? 'Calibration complete.'
+                : `Nice · ${calibrationSteps} of ${MAX_CALIBRATION_STEPS} captured`;
 
             if (calibrationSteps >= MAX_CALIBRATION_STEPS) {
                 clearInterval(calibrationInterval);
@@ -91,7 +98,9 @@ function setupListeners() {
     };
 
     sensitivitySlider.oninput = (e) => {
-        faceTracker.setThreshold(parseFloat(e.target.value));
+        const value = parseFloat(e.target.value);
+        faceTracker.setThreshold(value);
+        sensitivityValue.innerText = value.toFixed(2);
     };
 
     landmarkToggle.onchange = (e) => {
@@ -106,7 +115,8 @@ function setupListeners() {
                 game.lastEAR = faceTracker.lastEAR;
             } else {
                 const fpsDisp = document.getElementById('fps-display');
-                if (fpsDisp) fpsDisp.innerText = `FPS: 0 | EAR: ${earVal}`;
+                const fpsValue = fpsDisp?.querySelector('.fps-value');
+                if (fpsValue) fpsValue.innerText = `READY · EAR ${earVal}`;
             }
         }
     }, 100);

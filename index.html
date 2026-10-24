@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -20,26 +20,35 @@
         <div id="ui-overlay">
             <!-- Top HUD -->
             <div id="top-bar">
-                <div class="hud-chip" id="score-display">
-                    <span class="hud-icon">⭐</span> Score: 0
+                <div class="brand-mark"><span class="brand-dot"></span> SLEEPY DEV</div>
+                <div class="score-card" id="score-display">
+                    <span class="score-caption">SCORE</span>
+                    <strong class="score-value">000</strong>
                 </div>
-                <div class="hud-chip" id="fps-display">
-                    <span class="hud-icon">📡</span> FPS: 0
+                <div class="hud-chip" id="fps-display" aria-label="Tracking status">
+                    <span class="status-dot"></span><span class="fps-value">TRACKING</span>
                 </div>
             </div>
 
             <!-- Webcam preview -->
             <div id="webcam-container">
-                <div id="webcam-label">FACE CAM</div>
+                <div id="webcam-label"><span class="status-dot"></span> FACE CAM</div>
                 <video id="webcam" autoplay playsinline muted></video>
                 <canvas id="landmark-overlay"></canvas>
+            </div>
+
+            <div id="gesture-hud" aria-live="polite">
+                <div class="gesture-hud-title">LIVE CONTROLS</div>
+                <div class="gesture-pill"><span class="gesture-key">BLINK</span><span>Flip gravity</span></div>
+                <div class="gesture-pill"><span class="gesture-key">R WINK</span><span>Fire</span></div>
+                <div class="gesture-pill"><span class="gesture-key">L WINK</span><span>Boost</span></div>
             </div>
 
             <!-- Controls panel -->
             <div id="controls">
                 <div class="control-row">
                     <label class="ctrl-label" for="sensitivity-slider">
-                        👁 Sensitivity
+                        <span>TRACKING SENSITIVITY</span><output id="sensitivity-value">0.25</output>
                     </label>
                     <input type="range" id="sensitivity-slider" min="0.1" max="0.5" step="0.01" value="0.25">
                 </div>
@@ -47,7 +56,7 @@
                     <label class="ctrl-label toggle-label" for="toggle-landmarks">
                         <input type="checkbox" id="toggle-landmarks" checked>
                         <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                        Landmarks
+                        Show landmarks
                     </label>
                 </div>
             </div>
@@ -55,9 +64,9 @@
             <!-- ===== CALIBRATION MODAL ===== -->
             <div id="calibration-menu" class="modal">
                 <div class="modal-content glass">
-                    <div class="modal-badge">🎮 SETUP</div>
-                    <h1>Sleepy Dev</h1>
-                    <p class="modal-sub">A hands-free, blink-powered survival game</p>
+                    <div class="modal-badge">01 / 02 · SETUP</div>
+                    <h1>Stay awake.<br><span>Defy gravity.</span></h1>
+                    <p class="modal-sub">A hands-free arcade run powered by your face.</p>
 
                     <div class="how-grid">
                         <div class="how-card">
@@ -68,14 +77,13 @@
                             <div class="how-icon">😉</div>
                             <div class="how-text"><strong>Right wink</strong><br>Shoot bullet</div>
                         </div>
-                        <div class="how-card" style="grid-column: span 2;">
+                        <div class="how-card">
                             <div class="how-icon">😒</div>
                             <div class="how-text"><strong>Left wink</strong><br>Speed boost (2.5s)</div>
                         </div>
                     </div>
 
-                    <p class="calib-instruction">Grant camera access then hit <em>Start Calibration</em> and blink
-                        naturally 5 times.</p>
+                    <p class="calib-instruction"><strong>Quick calibration</strong><br>Grant camera access, then blink naturally five times so we can learn your eyes.</p>
 
                     <div class="progress-bar">
                         <div id="calibration-progress" class="progress"></div>
@@ -83,36 +91,38 @@
                     </div>
 
                     <p id="calibration-status" class="status-text">Initializing camera…</p>
-                    <button id="start-calibration" disabled>Wait for Camera</button>
+                    <button id="start-calibration" disabled>Wait for camera</button>
+                    <p class="privacy-note">◎ Your camera stays on this device</p>
                 </div>
             </div>
 
             <!-- ===== INSTRUCTIONS MODAL ===== -->
             <div id="instructions-menu" class="modal hidden">
                 <div class="modal-content glass">
-                    <div class="modal-badge">👾 HOW TO PLAY</div>
-                    <h1>You're calibrated!</h1>
+                    <div class="modal-badge">02 / 02 · READY</div>
+                    <h1>You're locked in.</h1>
+                    <p class="modal-sub">Three gestures. One rule: don’t hit the pillars.</p>
                     <ul class="instruction-list">
-                        <li><span class="li-icon">😑</span> <strong>Blink both</strong> → flip gravity</li>
-                        <li><span class="li-icon">😉</span> <strong>Right wink</strong> → fire bullet</li>
-                        <li><span class="li-icon">😒</span> <strong>Left wink</strong> → speed boost (2.5s)</li>
-                        <li><span class="li-icon">🟥</span> Dodge <strong>Red Pillars</strong></li>
-                        <li><span class="li-icon">🟠</span> Shoot <strong>Orange Enemies</strong> for +15 pts</li>
+                        <li><span class="li-icon">↕</span> <strong>Blink both</strong><span>flip gravity</span></li>
+                        <li><span class="li-icon">◐</span> <strong>Right wink</strong><span>fire a pulse</span></li>
+                        <li><span class="li-icon">»</span> <strong>Left wink</strong><span>boost for 2.5s</span></li>
                     </ul>
-                    <button id="start-game">🚀 Start Game</button>
+                    <p class="tip-line">Tip: keep your face centered and stay in good light.</p>
+                    <button id="start-game">Start the run <span>→</span></button>
                 </div>
             </div>
 
             <!-- ===== GAME OVER MODAL ===== -->
             <div id="game-over-menu" class="modal hidden">
                 <div class="modal-content glass">
-                    <div class="modal-badge">💀 GAME OVER</div>
-                    <h1>You crashed!</h1>
+                    <div class="modal-badge danger-badge">RUN ENDED</div>
+                    <h1>Gravity got you.</h1>
+                    <p class="modal-sub">Every run makes the next one sharper.</p>
                     <div class="score-big">
                         <span class="score-label">Final Score</span>
                         <span id="final-score" class="score-number">0</span>
                     </div>
-                    <button id="restart-game">🔄 Try Again</button>
+                    <button id="restart-game">Run it back <span>↗</span></button>
                 </div>
             </div>
         </div>

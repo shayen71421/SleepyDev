@@ -1,5 +1,12 @@
 # Change log
 
+## 2026-10-25T04:14:03+05:30 — Refresh game UI and onboarding UX
+
+- Changed: redesigned the calibration, instructions, game HUD, webcam preview, settings panel, and game-over screen in `index.html` and `style.css`; improved score/tracking updates in `main.js` and `game.js`.
+- Why: make the game easier to understand at a glance, give gesture controls persistent visibility, and create a more polished arcade presentation across desktop and mobile.
+- Validation: `npm run build` passed; `git diff --check` passed.
+- Limitations: browser camera and gesture interactions still need a manual device check in a well-lit environment.
+
 ## 2026-10-24T22:40:00+05:30 — Add Sleepy Dev game
 
 - Changed: copied the Blind Diving browser game into this hackathon repository and rebranded it as Sleepy Dev.

@@ -109,7 +109,7 @@ export class GravityGame {
         }, null, this);
 
         // ---- HUD refs ----
-        this.scoreText = document.getElementById('score-display');
+        this.scoreText = document.querySelector('#score-display .score-value');
         this.fpsText = document.getElementById('fps-display');
 
         // ---- Ground lines ----
@@ -212,10 +212,13 @@ export class GravityGame {
         if (this.enemyTimer.delay > 1200) this.enemyTimer.delay = Math.max(1200, this.enemyTimer.delay - 0.08);
 
         this.score += delta * 0.01;
-        if (this.scoreText) this.scoreText.innerText = `Score: ${Math.floor(this.score)}`;
+        if (this.scoreText) this.scoreText.innerText = String(Math.floor(this.score)).padStart(3, '0');
 
         const ear = this.lastEAR ? this.lastEAR.toFixed(3) : '0.000';
-        if (this.fpsText) this.fpsText.innerText = `FPS: ${Math.round(scene.game.loop.actualFps)} | EAR: ${ear}`;
+        if (this.fpsText) {
+            this.fpsText.querySelector('.fps-value').innerText = `TRACKING ${Math.round(scene.game.loop.actualFps)} FPS`;
+            this.fpsText.dataset.ear = ear;
+        }
     }
 
     _handleCollision() {

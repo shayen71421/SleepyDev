@@ -26,7 +26,7 @@ The organizer shared an older event template. Follow the current organizer annou
 
 ### Current status
 
-- Working features: webcam calibration, blink gravity control, wink shooting, speed boost, obstacles, enemies, scoring, and restart flow.
+- Working features: webcam calibration, blink gravity control, wink shooting, speed boost, obstacles, enemies, scoring, restart flow, and a responsive onboarding/game HUD with persistent gesture guidance.
 - Known limitations: camera permission and a well-lit face are required; audio files in `public/assets` are placeholders and are not currently wired into gameplay.
 - Libraries and APIs used: Phaser, MediaPipe Face Mesh, and `navigator.mediaDevices.getUserMedia`.
 
