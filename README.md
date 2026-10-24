@@ -1,6 +1,6 @@
-# Devin Hack Kochi
+# Sleepy Dev
 
-A repository template for participants at Devin Hack Kochi. It contains event guidance and documentation scaffolding; follow the organizers' current project-start instructions.
+Sleepy Dev is a hands-free browser arcade game controlled with facial gestures. Blink both eyes to flip gravity, wink with the right eye to shoot, and wink with the left eye to trigger a short speed boost.
 
 **[Event rules](RULES.md)** · **[Agent instructions](AGENTS.md)**
 
@@ -10,38 +10,24 @@ Devin Hack Kochi has no major AI usage constraints. Participants may use Devin a
 
 The organizer shared an older event template. Follow the current organizer announcements for logistics, participation format, eligibility, submission timing, and credits; the older template's details do not apply. See [RULES.md](RULES.md).
 
-## Use this template
+## Project
 
-1. Select **Use this template → Create a new repository** on GitHub. Create your own project repository and clone it.
-2. Read [RULES.md](RULES.md) and [AGENTS.md](AGENTS.md) before building. Follow the organizers' current project-start instructions.
-3. Fill in the project overview below as you build. Use any suitable language or framework, keeping the implementation simple.
-4. Record meaningful changes in [CHANGELOG.md](CHANGELOG.md) and, if maintained, your actual AI assistance in [AI_USAGE.md](AI_USAGE.md). Commit after completed milestones; aim for a meaningful checkpoint about every 30 minutes.
-5. Complete [SUBMISSION.md](SUBMISSION.md) with your code repository, short project description, and working demo. Follow submission instructions announced by the organizers.
-
-This template has no application code or required technology stack. The documentation and commit cadence are repository workflow guidance; the event participation rules are in [RULES.md](RULES.md).
-
-## Project overview — complete during the event
-
-- **Project name:** TODO
-- **Short description:** TODO — what it does, who it helps, and why it matters.
-- **Team:** TODO — participant names and GitHub handles.
-- **Working demo:** TODO — link or local demo instructions.
-- **Technology stack:** TODO
+- **Project name:** Sleepy Dev
+- **Short description:** A webcam-powered, hands-free survival game that turns blinks and winks into gameplay controls.
+- **Technology stack:** Vite, Phaser, MediaPipe Face Mesh, browser webcam APIs, and vanilla JavaScript.
 
 ### Run the project
 
-Replace these placeholders with commands that actually work for your project:
-
-1. Prerequisites and versions: TODO
-2. Dependency installation: TODO
-3. Environment setup: TODO — list required variable names and provide a sanitized `.env.example` if needed.
-4. Start the project: TODO
-5. Run checks or tests: TODO
+1. Install a current Node.js release.
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Open the local URL shown by Vite and allow webcam access.
+5. Build for production: `npm run build`
 
 ### Current status
 
-- Working features: TODO
-- Known limitations: TODO
-- Libraries, APIs, and public datasets used: TODO — include source links and applicable attribution.
+- Working features: webcam calibration, blink gravity control, wink shooting, speed boost, obstacles, enemies, scoring, and restart flow.
+- Known limitations: camera permission and a well-lit face are required; audio files in `public/assets` are placeholders and are not currently wired into gameplay.
+- Libraries and APIs used: Phaser, MediaPipe Face Mesh, and `navigator.mediaDevices.getUserMedia`.
 
 See [AI_USAGE.md](AI_USAGE.md) for AI assistance and [CHANGELOG.md](CHANGELOG.md) for the development record.

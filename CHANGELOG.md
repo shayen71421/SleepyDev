@@ -1,5 +1,13 @@
 # Change log
 
+## 2026-10-24T22:40:00+05:30 — Add Sleepy Dev game
+
+- Changed: copied the Blind Diving browser game into this hackathon repository and rebranded it as Sleepy Dev.
+- Why: turn the repository template into a runnable project for the hackathon.
+- Scope: added the Vite/Phaser app, face tracking, game UI, styling, and public assets; removed unused default Vite starter files.
+- Validation: installed dependencies with `npm install --no-audit` and verified `npm run build` succeeds.
+- Limitations: the checked-in MP3 files are invalid 404 HTML placeholders and audio is not yet connected to the game.
+
 ## 2026-10-24T21:53:05+05:30 — Correct Devin Hack Kochi event guidance
 
 - Changed: corrected the current event name and AI tool guidance in `.github/pull_request_template.md`, `AGENTS.md`, `AI_USAGE.md`, `CHANGELOG.md`, `README.md`, `RULES.md`, `SUBMISSION.md`.

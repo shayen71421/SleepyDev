@@ -4,6 +4,14 @@ If maintaining this record, briefly document the actual contributions of whichev
 
 ## Event build log
 
+## 2026-10-24T22:40:00+05:30 — Transfer and rebrand application
+
+- Tool: Codex.
+- Task: copy the existing game into SleepyDev and rebrand it as Sleepy Dev.
+- Affected files: application files in the repository root, `README.md`, and `CHANGELOG.md`.
+- Human review: pending.
+- Validation: installed dependencies and verified the Vite production build succeeds; browser runtime review remains pending.
+
 No participant AI usage has been recorded yet. Replace the placeholder row as you build. Mark human review as pending until someone has reviewed the contribution.
 
 | Date and time with timezone | Tool / model, if known | Task | Assistance and affected files | Human review / corrections | Validation and result |
