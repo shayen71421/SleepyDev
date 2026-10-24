@@ -16,6 +16,7 @@ const progressLine = document.getElementById('calibration-progress');
 const calibCount = document.getElementById('calib-count');
 const statusText = document.getElementById('calibration-status');
 const sensitivityValue = document.getElementById('sensitivity-value');
+const gestureFeedback = document.getElementById('gesture-feedback');
 
 let faceTracker;
 let game;
@@ -80,14 +81,17 @@ function setupListeners() {
         game.init();
 
         faceTracker.onBlink = () => {
+            showGestureFeedback('GRAVITY FLIPPED', 'BLINK');
             game.flipGravity();
         };
 
         faceTracker.onRightWink = () => {
+            showGestureFeedback('PULSE FIRED', 'RIGHT WINK');
             game.shoot();
         };
 
         faceTracker.onLeftWink = () => {
+            showGestureFeedback('BOOST ACTIVE', 'LEFT WINK');
             game.boostSpeed();
         };
     };
@@ -134,3 +138,12 @@ function finishCalibration(minEAR) {
 }
 
 init();
+
+function showGestureFeedback(message, gesture) {
+    if (!gestureFeedback) return;
+    gestureFeedback.innerHTML = `<span>${gesture}</span><strong>${message}</strong>`;
+    gestureFeedback.classList.remove('show');
+    requestAnimationFrame(() => gestureFeedback.classList.add('show'));
+    clearTimeout(showGestureFeedback.timeout);
+    showGestureFeedback.timeout = setTimeout(() => gestureFeedback.classList.remove('show'), 900);
+}

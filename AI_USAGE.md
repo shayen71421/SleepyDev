@@ -4,6 +4,38 @@ If maintaining this record, briefly document the actual contributions of whichev
 
 ## Event build log
 
+## 2026-10-25T04:40:00+05:30 — Shift palette to blue and yellow
+
+- Tool: Codex.
+- Task: change the game palette to electric blue and yellow while keeping the opening speed fast.
+- Affected files: `style.css`, `game.js`, `CHANGELOG.md`.
+- Human review: pending.
+- Validation: production build and whitespace checks passed.
+
+## 2026-10-25T04:34:00+05:30 — Increase run pace and time-based difficulty
+
+- Tool: Codex.
+- Task: make the game start faster, accelerate with survival time, and keep left wink as the sole temporary speed boost.
+- Affected files: `game.js`, `CHANGELOG.md`.
+- Human review: pending.
+- Validation: production build and whitespace checks passed.
+
+## 2026-10-25T04:28:00+05:30 — Restyle obstacle gates
+
+- Tool: Codex.
+- Task: replace flat red blocks with more distinctive neon hazard gate visuals.
+- Affected files: `game.js`, `CHANGELOG.md`.
+- Human review: pending.
+- Validation: production build and whitespace checks passed.
+
+## 2026-10-25T04:22:00+05:30 — Add active-play feedback and arena motion
+
+- Tool: Codex.
+- Task: respond to an active-game screenshot by improving HUD fit, animation, contrast, and gesture feedback.
+- Affected files: `index.html`, `style.css`, `main.js`, `game.js`, `CHANGELOG.md`.
+- Human review: pending.
+- Validation: production build and whitespace checks passed; visual browser review remains pending.
+
 ## 2026-10-25T04:14:03+05:30 — Improve game UI and UX
 
 - Tool: Codex.

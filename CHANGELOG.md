@@ -1,5 +1,33 @@
 # Change log
 
+## 2026-10-25T04:40:00+05:30 — Shift palette to blue and yellow
+
+- Changed: replaced red obstacle visuals and orange enemies with an electric-blue and warm-yellow palette, while increasing the opening pace and left-wink boost in `style.css` and `game.js`.
+- Why: create a more cohesive, energetic visual identity and make the run feel fast immediately.
+- Validation: `npm run build` and `git diff --check` passed.
+- Limitations: webcam playtest is still recommended for difficulty tuning.
+
+## 2026-10-25T04:34:00+05:30 — Increase run pace and time-based difficulty
+
+- Changed: raised starting obstacle/enemy speeds, added elapsed-time acceleration, tightened spawn intervals during longer runs, and made left-wink boost temporary and reversible in `game.js`.
+- Why: give the run immediate momentum and ensure surviving always gets faster; left wink remains the only speed-boost gesture.
+- Validation: `npm run build` and `git diff --check` passed.
+- Limitations: final tuning still benefits from a real webcam playtest.
+
+## 2026-10-25T04:28:00+05:30 — Restyle obstacle gates
+
+- Changed: replaced flat red obstacle rectangles with layered neon hazard gates featuring a dark core, glowing rails, warning bands, and beveled edges in `game.js`.
+- Why: make obstacles feel like intentional game objects and improve their visual readability during fast play.
+- Validation: `npm run build` and `git diff --check` passed.
+- Limitations: obstacle styling has not yet been manually reviewed at every viewport size.
+
+## 2026-10-25T04:22:00+05:30 — Add active-play feedback and arena motion
+
+- Changed: fixed top HUD overflow, added animated ambient grid/stars, brighter game textures, gesture feedback banners, and subtle HUD/modal motion in `game.js`, `main.js`, and `style.css`.
+- Why: make active play feel responsive and visually legible instead of flat and static.
+- Validation: `npm run build` and `git diff --check` passed.
+- Limitations: gesture feedback and camera framing still need a manual browser/device check.
+
 ## 2026-10-25T04:14:03+05:30 — Refresh game UI and onboarding UX
 
 - Changed: redesigned the calibration, instructions, game HUD, webcam preview, settings panel, and game-over screen in `index.html` and `style.css`; improved score/tracking updates in `main.js` and `game.js`.

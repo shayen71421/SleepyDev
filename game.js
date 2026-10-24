@@ -9,6 +9,7 @@ export class GravityGame {
         this.isGravityFlipped = false;
         this.lastEAR = 0;
         this.lastFlipTime = 0;
+        this.runTime = 0;
         this.running = false;
     }
 
@@ -18,6 +19,7 @@ export class GravityGame {
         this.score = 0;
         this.isGravityFlipped = false;
         this.lastFlipTime = 0;
+        this.runTime = 0;
         this.running = false;
 
         const self = this;
@@ -47,11 +49,25 @@ export class GravityGame {
         const H = scene.scale.height;
         const cx = H / 2;
 
+        // A subtle sci-fi arena gives the playfield depth without competing with gameplay.
+        const arena = scene.add.graphics();
+        arena.fillGradientStyle(0x111b31, 0x080c17, 0x080c17, 0x10182a, 0.95);
+        arena.fillRect(0, 0, W, H);
+        arena.lineStyle(1, 0x33466d, 0.22);
+        for (let x = 0; x < W; x += 90) arena.lineBetween(x, 0, x, H);
+        for (let y = 0; y < H; y += 90) arena.lineBetween(0, y, W, y);
+        const stars = scene.add.group();
+        for (let i = 0; i < Math.min(45, Math.floor(W / 28)); i++) {
+            const star = scene.add.circle(Phaser.Math.Between(0, W), Phaser.Math.Between(0, H), Phaser.Math.Between(1, 2), 0x6de7e2, 0.25);
+            stars.add(star);
+            scene.tweens.add({ targets: star, alpha: { from: 0.12, to: 0.5 }, duration: Phaser.Math.Between(900, 1800), yoyo: true, repeat: -1, delay: Phaser.Math.Between(0, 1000) });
+        }
+
         // ---- Textures ----
         this._makeTexture(scene, 'player', (g) => {
-            g.fillStyle(0x3b82f6, 1);
+            g.fillStyle(0x4f8dff, 1);
             g.fillRoundedRect(0, 0, 36, 36, 8);
-            g.lineStyle(2, 0xffffff, 1);
+            g.lineStyle(2, 0x9cffff, 1);
             g.strokeRoundedRect(1, 1, 34, 34, 8);
             g.fillStyle(0xffffff, 1);
             g.fillCircle(10, 12, 4);
@@ -59,21 +75,36 @@ export class GravityGame {
         }, 36, 36);
 
         this._makeTexture(scene, 'obstacle', (g) => {
-            g.fillStyle(0xcc2222, 1);
-            g.fillRect(0, 0, 56, 600);
-            g.lineStyle(1, 0xff6666, 0.6);
-            g.strokeRect(0, 0, 56, 600);
-        }, 56, 600);
+            // Layered blue hazard gate: dark core, electric edge lights, and yellow warning bands.
+            g.fillGradientStyle(0x102a68, 0x245bc0, 0x0b163c, 0x173b91, 1);
+            g.fillRoundedRect(0, 0, 64, 640, 7);
+            g.fillStyle(0x050b20, 0.58);
+            g.fillRect(13, 0, 38, 640);
+            g.fillStyle(0x6db5ff, 0.2);
+            g.fillRect(17, 0, 4, 640);
+            g.fillStyle(0xffd166, 0.9);
+            for (let y = 18; y < 640; y += 58) {
+                g.fillRect(6, y, 7, 4);
+                g.fillRect(51, y + 27, 7, 4);
+            }
+            g.lineStyle(3, 0x75c7ff, 0.95);
+            g.strokeRoundedRect(1.5, 1.5, 61, 637, 6);
+            g.lineStyle(1, 0xffd166, 0.65);
+            g.lineBetween(7, 0, 7, 640);
+            g.lineBetween(56, 0, 56, 640);
+        }, 64, 640);
 
         this._makeTexture(scene, 'enemy', (g) => {
-            g.fillStyle(0xff8800, 1);
+            g.fillStyle(0xffc928, 1);
             g.fillCircle(18, 18, 18);
-            g.lineStyle(2, 0xffcc00, 1);
+            g.fillStyle(0xfff4b8, 0.85);
+            g.fillCircle(12, 11, 5);
+            g.lineStyle(2, 0xfff2a900, 1);
             g.strokeCircle(18, 18, 18);
         }, 36, 36);
 
         this._makeTexture(scene, 'bullet', (g) => {
-            g.fillStyle(0x00ffcc, 1);
+            g.fillStyle(0xfff1a6, 1);
             g.fillEllipse(20, 8, 20, 8);
         }, 20, 8);
 
@@ -92,10 +123,10 @@ export class GravityGame {
 
         // ---- Timers ----
         this.spawnTimer = scene.time.addEvent({
-            delay: 1600, callback: this._spawnObstacle, callbackScope: this, loop: true
+            delay: 1000, callback: this._spawnObstacle, callbackScope: this, loop: true
         });
         this.enemyTimer = scene.time.addEvent({
-            delay: 2800, callback: this._spawnEnemy, callbackScope: this, loop: true
+            delay: 1700, callback: this._spawnEnemy, callbackScope: this, loop: true
         });
 
         // ---- Collisions ----
@@ -133,17 +164,19 @@ export class GravityGame {
         const H = scene.scale.height;
         const W = scene.scale.width;
         const obsH = Phaser.Math.Between(160, Math.min(420, H * 0.55));
-        const obsW = 56;
+        const obsW = 64;
         const isCeiling = Phaser.Math.Between(0, 1) === 0;
         const y = isCeiling ? obsH / 2 : H - obsH / 2;
-        const speed = (320 + this.score * 0.9) * (this._speedMultiplier || 1);
+        const speed = Math.min(1040, 560 + this.runTime * 19 + this.score * 0.45);
 
         const obs = this.obstacles.create(W + obsW, y, 'obstacle');
         obs.setDisplaySize(obsW, obsH);
         obs.setSize(obsW, obsH).setOffset(0, 0);
         obs.setImmovable(true);
         obs.body.setAllowGravity(false);
-        obs.setVelocityX(-speed);
+        obs.setData('cruiseSpeed', speed);
+        obs.setVelocityX(-speed * (this._boosting ? 1.8 : 1));
+        obs.setAlpha(0.98);
     }
 
     _spawnEnemy() {
@@ -152,12 +185,13 @@ export class GravityGame {
         const H = scene.scale.height;
         const W = scene.scale.width;
         const y = Phaser.Math.Between(60, H - 60);
-        const speed = (240 + this.score * 0.6) * (this._speedMultiplier || 1);
+        const speed = Math.min(880, 460 + this.runTime * 15 + this.score * 0.35);
 
         const enemy = this.enemies.create(W + 40, y, 'enemy');
         enemy.setSize(28, 28).setOffset(4, 4);
         enemy.body.setAllowGravity(false);
-        enemy.setVelocityX(-speed);
+        enemy.setData('cruiseSpeed', speed);
+        enemy.setVelocityX(-speed * (this._boosting ? 1.8 : 1));
         // Wobble up/down
         scene.tweens.add({
             targets: enemy,
@@ -207,9 +241,17 @@ export class GravityGame {
             });
         });
 
-        // Difficulty ramp
-        if (this.spawnTimer.delay > 700) this.spawnTimer.delay = Math.max(700, this.spawnTimer.delay - 0.12);
-        if (this.enemyTimer.delay > 1200) this.enemyTimer.delay = Math.max(1200, this.enemyTimer.delay - 0.08);
+        // Difficulty ramps with survival time so the run always gains momentum.
+        this.runTime += delta / 1000;
+        this.spawnTimer.delay = Math.max(480, 1000 - this.runTime * 7);
+        this.enemyTimer.delay = Math.max(800, 1700 - this.runTime * 6);
+        const currentMultiplier = this._boosting ? 1.8 : 1;
+        [this.obstacles, this.enemies].forEach(group => {
+            group.getChildren().forEach(obj => {
+                const cruiseSpeed = obj.getData('cruiseSpeed');
+                if (cruiseSpeed) obj.setVelocityX(-cruiseSpeed * currentMultiplier);
+            });
+        });
 
         this.score += delta * 0.01;
         if (this.scoreText) this.scoreText.innerText = String(Math.floor(this.score)).padStart(3, '0');
@@ -245,22 +287,13 @@ export class GravityGame {
     boostSpeed() {
         if (!this.running || !this.player?.active || this._boosting) return;
         this._boosting = true;
-        this._speedMultiplier = 1.6;
 
         // Visual flash — orange tint
         this.scene.cameras.main.flash(120, 245, 158, 11, 0.18);
 
-        // Apply boost to all live obstacles and enemies
-        const applyBoost = (obj) => {
-            if (obj.body) obj.setVelocityX(obj.body.velocity.x * 1.6);
-        };
-        this.obstacles.getChildren().forEach(applyBoost);
-        this.enemies.getChildren().forEach(applyBoost);
-
         // Reset after 2.5s
         this.scene.time.delayedCall(2500, () => {
             this._boosting = false;
-            this._speedMultiplier = 1;
         });
     }
 
