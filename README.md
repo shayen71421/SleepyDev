@@ -6,9 +6,7 @@ Sleepy Dev is a hands-free browser arcade game controlled with facial gestures. 
 
 ## Event details
 
-Devin Hack Kochi has no major AI usage constraints. Participants may use Devin and other AI tools, models, and providers; this template does not require Codex or restrict AI usage to OpenAI. AI usage notes are project documentation, not an additional event eligibility requirement.
-
-The organizer shared an older event template. Follow the current organizer announcements for logistics, participation format, eligibility, submission timing, and credits; the older template's details do not apply. See [RULES.md](RULES.md).
+Devin Hack Kochi has no major AI usage constraints. Participants may use Devin and other AI tools, models, and providers. Follow the organizers' current announcements for logistics, participation format, eligibility, submission timing, and credits. See [RULES.md](RULES.md).
 
 ## Project
 
@@ -45,4 +43,4 @@ For a production-like local preview, run `npm run build` followed by `npm run pr
 
 The game uses the public Firebase Web configuration in `firebase.js` and reads at most ten leaderboard documents only when the public leaderboard or game-over screen opens. Saving a score performs one Firestore write, then one bounded refresh. Create the `sleepy-dev-scores` collection in the Firebase project and publish [firestore.rules](firestore.rules) before demoing the leaderboard. The rules allow public reads and validated score creation, but no updates or deletes. No environment variables are required by the current hardcoded Firebase web configuration.
 
-See [AI_USAGE.md](AI_USAGE.md) for AI assistance and [CHANGELOG.md](CHANGELOG.md) for the development record.
+AI assistance was used during development. The submitted repository preserves the implementation history in Git commits.
