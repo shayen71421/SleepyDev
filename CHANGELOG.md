@@ -1,5 +1,19 @@
 # Change log
 
+## 2026-10-25T04:55:00+05:30 — Add project owner and repository details
+
+- Changed: added Shayen Thomas, GitHub handle `shayen71421`, repository URL, and contribution details to `SUBMISSION.md`.
+- Why: complete the participant and project identity fields for submission preparation.
+- Validation: reviewed the updated submission links and fields.
+- Limitations: final submitted commit SHA and deployed demo URL still need to be added.
+
+## 2026-10-25T04:50:00+05:30 — Complete README and submission documentation
+
+- Changed: documented local setup, leaderboard configuration, demo walkthrough, dependencies, checks, known limitations, and filled all implementation-known fields in `SUBMISSION.md`.
+- Why: align the project documentation with the hackathon template without inventing the repository URL, participant details, or final commit SHA.
+- Validation: reviewed Markdown links and confirmed the documented commands match `package.json`.
+- Limitations: organizer-specific submission details and participant placeholders still require human completion.
+
 ## 2026-10-25T04:45:00+05:30 — Add public leaderboard home view
 
 - Changed: added a public leaderboard modal linked from the setup screen, reusing the cached top-10 Firestore query in `index.html`, `main.js`, and `style.css`.

@@ -4,6 +4,22 @@ If maintaining this record, briefly document the actual contributions of whichev
 
 ## Event build log
 
+## 2026-10-25T04:55:00+05:30 — Add project owner and repository details
+
+- Tool: Codex.
+- Task: record the participant name, GitHub handle, repository URL, and contribution in the submission template.
+- Affected files: `SUBMISSION.md`, `CHANGELOG.md`.
+- Human review: pending.
+- Validation: reviewed the updated submission fields and repository link.
+
+## 2026-10-25T04:50:00+05:30 — Complete README and submission documentation
+
+- Tool: Codex.
+- Task: align README and submission documentation with the repository template and implemented Firebase leaderboard flow.
+- Affected files: `README.md`, `SUBMISSION.md`, `CHANGELOG.md`.
+- Human review: pending.
+- Validation: reviewed Markdown links and checked documented commands against `package.json`.
+
 ## 2026-10-25T04:45:00+05:30 — Add public leaderboard home view
 
 - Tool: Codex.
